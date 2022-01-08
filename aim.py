@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-# AIM v0.1.0-beta
+# AIM v0.1.1-beta
 #
 # AppImageManager (AIM) is a small application for managing installed AppImage files.
 # It is currently still in beta, due to a lack of testing and a lack of a lack of features.
 #
-# TODO:
-# - Configurable sources
-# - User mode (use w/o root, install for current user only)
-# - Store already installed files & their versions
-# - Install from a file on disk
-# - .desktop files, where applicable
+# CHANGELOG:
+#
+# v0.1.1-beta:
+# 	- Allow installing from local file
+# 	- Change usage text
+#
+# v0.1.0-beta:
+# 	- Initial release.
 
 import os, sys, stat # Used for interacting with the system
 import requests # Used for downloading files
@@ -17,7 +19,8 @@ import json # Used for parsing packages.json
 
 # Prints the usage information of the script
 def print_usage():
-	print("Usage: aim <install/remove> <package list>")
+	print("Usage: ")
+	print("aim <install/remove> <package list>")
 
 # Gets package.json
 def get_packages():
@@ -48,14 +51,20 @@ if __name__ == "__main__":
 		package_list = get_packages()
 		for package in packages:
 			try:
-				if package in package_list:
-					print("Downloading " + package + "...")
-					package_file = requests.get(package_list[package])
+				if (package in package_list) or package.endswith(".AppImage"): # this is bad
+					if package.endswith(".AppImage"): # Local file
+						file_contents = open(package, "rb").read()
+						package = package[:-9]
+					else: # Remote file
+						print("Downloading " + package + "...")
+						package_file = requests.get(package_list[package])
+						file_contents = package_file.content
+
 					print("Installing " + package + "...")
-					open("/usr/share/aim/" + package, "wb").write(package_file.content)
+					open("/usr/share/aim/" + package, "wb").write(file_contents)
 					os.chmod("/usr/share/aim/" + package, stat.S_IROTH | stat.S_IXOTH)
 				else:
-					print("Couldn't install " + package + " because it is not in the provided package list.")
+					print("Couldn't install " + package + " because it could not be found.")
 			except:
 				print("Couldn't install " + package + " because an error occured.")
 	elif sys.argv[1] == "remove":
