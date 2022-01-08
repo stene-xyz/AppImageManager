@@ -1,5 +1,5 @@
 {
 	"osu": "https://github.com/ppy/osu/releases/latest/download/osu.AppImage",
 	"soulseek": "https://stene.xyz/aim/soulseek.AppImage",
-	"rockbox-utility": "https://download.rockbox.org/rbutil/linux/RockboxUtility-v1.4.1-x86_64.AppImage"
+	"rockbox-utility": "https://stene.xyz/aim/rockbox_utility.AppImage"
 }
