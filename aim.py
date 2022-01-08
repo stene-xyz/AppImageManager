@@ -21,7 +21,7 @@ def print_usage():
 
 # Gets package.json
 def get_packages():
-	sources = ["https://raw.githubusercontent.com/stene-xyz/AppImageManager/main/packages.json"]
+	sources = ["https://stene.xyz/aim/packages.json"]
 	package_list = {}
 	for source in sources:
 		try:
