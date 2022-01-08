@@ -11,7 +11,7 @@
 # - Install from a file on disk
 # - .desktop files, where applicable
 
-import os, sys # Used for interacting with the system
+import os, sys, stat # Used for interacting with the system
 import requests # Used for downloading files
 import json # Used for parsing packages.json
 
@@ -21,14 +21,14 @@ def print_usage():
 
 # Gets package.json
 def get_packages():
-	sources = ["https://github.com/stene-xyz/AppImageManager/packages.json"]
+	sources = ["https://raw.githubusercontent.com/stene-xyz/AppImageManager/main/packages.json"]
 	package_list = {}
 	for source in sources:
 		try:
 			package_json = requests.get(source)
 			package_list.update(json.loads(package_json.content))
-		except:
-			print("Failed to get packages.json from " + source + ".")
+		except Exception as e:
+			print("Failed to get packages.json from " + source + ": " + e)
 	return package_list
 
 # Actual app code
@@ -49,9 +49,11 @@ if __name__ == "__main__":
 		for package in packages:
 			try:
 				if package in package_list:
-					print("Installing " + package + "...")
+					print("Downloading " + package + "...")
 					package_file = requests.get(package_list[package])
+					print("Installing " + package + "...")
 					open("/usr/share/aim/" + package, "wb").write(package_file.content)
+					os.chmod("/usr/share/aim/" + package, stat.S_IROTH | stat.S_IXOTH)
 				else:
 					print("Couldn't install " + package + " because it is not in the provided package list.")
 			except:

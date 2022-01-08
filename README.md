@@ -1,5 +1,6 @@
 # AppImageManager
-AppImage Manager (AIM for short) is a basic package manager for AppImage files.
+AppImage Manager (AIM for short) is a basic package manager for AppImage files.  
+It is currently in beta due to a lack of features (and a lack of included packages)  
 
 ## Requirements
 - Some flavor of x86 Linux
@@ -10,3 +11,4 @@ AppImage Manager (AIM for short) is a basic package manager for AppImage files.
 Run the `install.sh` script as root.
 
 ## Usage
+`aim <install/remove> <package list>`

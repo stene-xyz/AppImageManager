@@ -14,6 +14,7 @@ mkdir /usr/share/aim
 chmod a+r /usr/share/aim
 
 echo "Adding /usr/share/aim to path..."
+rm /etc/profile.d/aim.sh
 echo "#!/bin/bash" >> /etc/profile.d/aim.sh
 echo "export PATH=\$PATH:/usr/share/aim" >> /etc/profile.d/aim.sh
 
